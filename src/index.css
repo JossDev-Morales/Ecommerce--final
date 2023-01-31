@@ -1,0 +1,18 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#root{
+  width: 100%;
+  height: 100vh;
+}
+.svg path{
+  fill: #a9b0bd;
+}
+*{
+  transition: all .3s ease-out;
+}
+.svg:hover path{
+  fill: white;
+}
