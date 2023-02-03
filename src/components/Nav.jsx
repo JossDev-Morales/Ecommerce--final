@@ -1,16 +1,16 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setOpen } from '../store/slices/Open'
 import { Link } from 'react-router-dom'
 
-const navigation = [
-  { name: 'Home', href: '/', current: true},
-  { name: 'User', href: '/user', current: false},
-  { name: 'Purchases', href: '/purchases', current: false},
-  { name: 'Cart', href: '#', current: false, action: "cart"},
-  { name: 'Log In', href: '/login', current: false}
+const [navigation, setNavigation] = [
+  { name: 'Home', href: '/', current: true, user: true, notuser: true },
+  { name: 'User', href: '/user', current: false, user: true, notuser: false },
+  { name: 'Purchases', href: '/purchases', current: false, user: true, notuser: false },
+  { name: 'Cart', href: '#', current: false, action: "cart", user: true, notuser: false },
+  { name: 'Log In', href: '/login', current: false, user: false, notuser: true }
 ]
 
 function classNames(...classes) {
@@ -18,7 +18,24 @@ function classNames(...classes) {
 }
 
 export default function Nav() {
-  const dispatch=useDispatch()
+  const Avataricon=useSelector(state=>state.Avatar)
+  const [navigation, setNavigation] = useState()
+  const arr = [
+    { name: 'Home', href: '/', current: true, user: true, notuser: true },
+    { name: 'User', href: '/user', current: false, user: true, notuser: false },
+    { name: 'Purchases', href: '/purchases', current: false, user: true, notuser: false },
+    { name: 'Cart', href: '#', current: false, action: "cart", user: true, notuser: false },
+    { name: 'Log In', href: '/login', current: false, user: false, notuser: true }
+  ]
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.User)
+  useEffect(() => {
+    if (user == null) {
+      setNavigation(arr.filter(e => e.notuser == true))
+    } else {
+      setNavigation(arr.filter(e => e.user == true))
+    }
+  }, [user])
   return (
     <Disclosure as="nav" className="bg-gray-800  w-screen h-auto z-10">
       {({ open }) => (
@@ -51,9 +68,9 @@ export default function Nav() {
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
-                    {navigation.map((item) => (
+                    {navigation?.map((item) => (
                       <Link
-                        onClick={()=>{item.action=="cart" && dispatch(setOpen(true))}}
+                        onClick={() => { item.action == "cart" && dispatch(setOpen(true)) }}
                         key={item.name}
                         to={item.href}
                         className={classNames(
@@ -69,22 +86,24 @@ export default function Nav() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button
-                  type="button"
-                  className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                >
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
 
-                {/* Profile dropdown */}
+                {user != null && (
+                  <>
+                  <button
+                    type="button"
+                    className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  >
+                    <span className="sr-only">View notifications</span>
+                    <BellIcon className="h-6 w-6" aria-hidden="true" />
+                  </button>
+
                 <Menu as="div" className="relative ml-3">
                   <div>
                     <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="sr-only">Open user menu</span>
                       <img
-                        className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        className="h-8 w-8 rounded-full object-cover"
+                        src={Avataricon}
                         alt=""
                       />
                     </Menu.Button>
@@ -121,28 +140,35 @@ export default function Nav() {
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="#"
+                          <Link
+                            onClick={()=>{
+                              localStorage.setItem("token","")
+                              setTimeout(() => {
+                                location.reload()
+                              }, 200);
+                            }}
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
                             Sign out
-                          </a>
+                          </Link>
                         )}
                       </Menu.Item>
                     </Menu.Items>
                   </Transition>
                 </Menu>
+                </>
+                )}
               </div>
             </div>
           </div>
 
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
-              {navigation.map((item) => (
+              {navigation?.map((item) => (
                 <Disclosure.Button
                   key={item.name}
                   as="div"
-                  onClick={()=>{item.action=="cart" && dispatch(setOpen(true))}}
+                  onClick={() => { item.action == "cart" && dispatch(setOpen(true)) }}
                   className={classNames(
                     item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                     'block px-3  rounded-md text-base font-medium'

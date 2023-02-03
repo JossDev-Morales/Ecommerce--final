@@ -20,5 +20,8 @@ export const getProductsThunk = () => (dispatch) => {
     return axios.get('https://e-commerce-api-v2.academlo.tech/api/v1/products')
         .then(res => dispatch(setProducts(res.data)))
         .finally(() =>{
-            dispatch(setLoader(false))})
+            setTimeout(() => {
+                dispatch(setLoader(false))
+            }, 2250);
+        })
 }

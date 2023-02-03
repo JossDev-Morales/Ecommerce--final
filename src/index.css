@@ -16,3 +16,56 @@
 .svg:hover path{
   fill: white;
 }
+.reset{
+  --tw-ring-color:rgba(255, 255, 255, 0) !important;
+}
+.reset:checked{
+  background-color: #1f2937 !important;
+}
+input{--tw-ring-color:rgba(204, 12, 12, 0) !important;
+  border-color: #6b7280 !important;
+}
+.bg-trans{
+  background-color: #ffffff17;
+}
+.file-select {
+  position: relative;
+  display: inline-block;
+}
+
+.file-select::before {
+  background-color: #1f29379a;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  content: 'Seleccionar'; /* testo por defecto */
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.file-select input[type="file"] {
+  opacity: 0;
+  width: 120px;
+  height: 32px;
+  display: inline-block;
+}
+
+#src-file1::before {
+  content: 'Pick an avatar';
+}
+.mx-full{
+  margin-left: 40%;
+  margin-right: 40%;
+}
+body{
+  overflow: hidden;
+}
+.h-pers{
+  height: 93%;
+}
+

@@ -2,6 +2,10 @@
 module.exports = {
   content: ["./index.html", "./src/**/*.jsx"],
   theme: {
+    fontFamily: {
+      'Lobster': ['Lobster', 'sans-serif'],
+      'Krona': ['"Krona One"', 'serif'] 
+    },
      extend: {},
    },
    plugins: [
