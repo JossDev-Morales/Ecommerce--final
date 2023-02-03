@@ -168,14 +168,15 @@ export default function Nav() {
                 <Disclosure.Button
                   key={item.name}
                   as="div"
-                  onClick={() => { item.action == "cart" && dispatch(setOpen(true)) }}
                   className={classNames(
                     item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                     'block px-3  rounded-md text-base font-medium'
                   )}
                   aria-current={item.current ? 'page' : undefined}
                 >
-                  <Link className="w-full h-full py-2 block" to={item.href}>
+                  <Link 
+                  onClick={() => { item.action == "cart" && dispatch(setOpen(true)) }}
+                  className="w-full h-full py-2 block" to={item.href}>
                     {item.name}
                   </Link>
                 </Disclosure.Button>
