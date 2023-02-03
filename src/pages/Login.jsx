@@ -66,7 +66,7 @@ function LogIn() {
                     type="checkbox" className="reset m-2 rounded-sm outline-none checked:bg-black" />
                 </div>
                 
-                <input type={"submit"} onClick={()=>alert("xd")} className="w-1/3 h-auto p-2 text-white rounded-md bg-gray-800 z-50 hover:scale-105" value={"Go!"}/>
+                <input type={"submit"} className="w-1/3 h-auto p-2 text-white rounded-md bg-gray-800 z-50 hover:scale-105" value={"Go!"}/>
                 <span className="text-lg font-bold text-slate-800 w-full text-center">you are not? <Link className="font-thin" to={"/signup"}>Register Now</Link></span>
                 
             </motion.form>

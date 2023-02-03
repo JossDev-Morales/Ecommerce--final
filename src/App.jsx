@@ -20,6 +20,7 @@ import { setAvatarPath } from './store/slices/Avatar.slice'
 import { getCartThunk } from './store/slices/Cart.slice'
 import { getPurchasesThunk } from './store/slices/Purchases.slice'
 import Redirect from './pages/protected/Redirect'
+import ConfigComponent from './pages/Config'
 
 export let configUser = {
   headers: {
@@ -80,6 +81,7 @@ function App() {
         <Route element={<ProtectedRoutes />}>
           <Route path="/purchases" element={<Purchases />} />
           <Route path="/user" element={<User />} />
+          <Route path='/config' element={<ConfigComponent/>}/>
         </Route>
 
       </Routes>
