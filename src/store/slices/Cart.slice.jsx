@@ -16,8 +16,14 @@ export const Cart = createSlice({
 export const { setCartSlice } = Cart.actions;
 
 export default Cart.reducer;
-export const getCartThunk = () => (dispatch) => {
-    return axios.get("https://e-commerce-api-v2.academlo.tech/api/v1/cart",configUser)
+export const getCartThunk = (switchrel,token) => (dispatch) => {
+    const confrel={
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+          }
+    }
+    return axios.get("https://e-commerce-api-v2.academlo.tech/api/v1/cart",switchrel==true?confrel:configUser)
     .then(res=>{
         dispatch(setCartSlice(res.data))
         dispatch(setTotal(res.data.map(e=>parseInt(e.product.price*e.quantity)).reduce((a, b) => a + b, 0)))

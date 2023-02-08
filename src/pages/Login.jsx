@@ -8,6 +8,8 @@ import { setLoader } from "../store/slices/Loader.slice";
 import { setUser } from "../store/slices/User.slice";
 import { config } from "./SignUp";
 import { motion } from "framer-motion";
+import { getPurchasesThunk } from "../store/slices/Purchases.slice";
+import { getCartThunk } from "../store/slices/Cart.slice";
 
 function LogIn() {
     const [saveToken,setSaveToken]=useState(false)
@@ -23,20 +25,19 @@ function LogIn() {
         axios.post("https://e-commerce-api-v2.academlo.tech/api/v1/users/login/",data)
        .then(res=>{
         dispatch(setUser(res.data.user))
+        dispatch(getCartThunk(true,res.data.token))
+        dispatch(getPurchasesThunk(true,res.data.token))
         axios.get("https://api.jsonbin.io/v3/b/63db31e2ebd26539d073338b/",config)
         .then(images=>{
             dispatch(setAvatarPath(images.data.record["u"+res.data.user.id]))
         })
         .finally(
             setTimeout(() => {
+                localStorage.setItem("token",res.data.token)
+                navigate("/")      
                 dispatch(setLoader(false))
             }, 2000)
-        )
-        navigate("/")
-        
-        if (saveToken==true) {
-          localStorage.setItem("token",res.data.token)  
-        } 
+        )  
        })
     }
     return(
@@ -59,12 +60,7 @@ function LogIn() {
                     <h3 className="w-full text-left font-thin text-gray-900 text-lg">Password</h3>            
                     <input {...register("password")} className="rounded-md w-full hover:scale-105" type="text" id="password" placeholder="Your password" />
                 </label>
-                <div className="w-4/5 mx-4 z-50">
-                    <p className="text-gray-900 font-thin w-auto">Remember me</p>
-                    <input 
-                    onChange={()=>{saveToken==false?setSaveToken(true):setSaveToken(false)}} 
-                    type="checkbox" className="reset m-2 rounded-sm outline-none checked:bg-black" />
-                </div>
+                
                 
                 <input type={"submit"} className="w-1/3 h-auto p-2 text-white rounded-md bg-gray-800 z-50 hover:scale-105" value={"Go!"}/>
                 <span className="text-lg font-bold text-slate-800 w-full text-center">you are not? <Link className="font-thin" to={"/signup"}>Register Now</Link></span>

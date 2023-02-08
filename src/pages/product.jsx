@@ -13,38 +13,6 @@ import { faBookmark, faStar } from "@fortawesome/free-regular-svg-icons"
 import taken from './../assets/taken.svg'
 
 function Product() {
-    const ta = [{
-        id: 1,
-        name: 'Earthen Bottle',
-        href: '#',
-        price: '$48',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg',
-        imageAlt: 'Tall slender porcelain bottle with natural clay textured body and cork stopper.',
-    },
-    {
-        id: 2,
-        name: 'Nomad Tumbler',
-        href: '#',
-        price: '$35',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-02.jpg',
-        imageAlt: 'Olive drab green insulated bottle with flared screw lid and flat top.',
-    },
-    {
-        id: 3,
-        name: 'Focus Paper Refill',
-        href: '#',
-        price: '$89',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-03.jpg',
-        imageAlt: 'Person using a pen to cross a task off a productivity paper card.',
-    },
-    {
-        id: 4,
-        name: 'Machined Mechanical Pencil',
-        href: '#',
-        price: '$35',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg',
-        imageAlt: 'Hand holding black machined steel mechanical pencil with brass tip and top.',
-    },]
     const [tag, setTag] = useState([])
     const [product, setProduct] = useState({})
     const [position, setPosition] = useState()
@@ -58,11 +26,11 @@ function Product() {
         axios.get(`https://e-commerce-api-v2.academlo.tech/api/v1/products/${params.id}/`)
             .then(res => {
                 setProduct(res.data)
-                setPosition(res.data.images[0].url)
-                dispatch(setLoader(false))
+                setPosition(res.data.images[0].url)           
                 axios.get(`https://e-commerce-api-v2.academlo.tech/api/v1/products?categoryId=${res.data.categoryId}`)
                     .then(res => {
                         setTag(res.data)
+                        dispatch(setLoader(false))
                     })
             })
 
@@ -75,7 +43,7 @@ function Product() {
         }
         axios.post("https://e-commerce-api-v2.academlo.tech/api/v1/cart/", packagePost, configUser)
             .then(res => {
-                dispatch(getCartThunk())
+                dispatch(getCartThunk(false))
 
             })
             .finally(() => {

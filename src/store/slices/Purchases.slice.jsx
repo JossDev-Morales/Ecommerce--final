@@ -15,7 +15,13 @@ export const Purchases = createSlice({
 export const { setPurchases } = Purchases.actions;
 
 export default Purchases.reducer;
-export const getPurchasesThunk = () => (dispatch) => {
-    return axios.get("https://e-commerce-api-v2.academlo.tech/api/v1/purchases/",configUser)
+export const getPurchasesThunk = (switchrel,token) => (dispatch) => {
+    const confrel={
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+          }
+    }
+    return axios.get("https://e-commerce-api-v2.academlo.tech/api/v1/purchases/",switchrel==true?confrel:configUser)
         .then(res => dispatch(setPurchases(res.data)))
 }

@@ -31,7 +31,7 @@ function Products() {
       .then(res => console.log(res))
       .finally(() => {
         dispatch(setOpen(true))
-        dispatch(getCartThunk())
+        dispatch(getCartThunk(false))
       })
   }
   return (

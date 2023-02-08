@@ -24,8 +24,8 @@ function Cart() {
     axios.post("https://e-commerce-api-v2.academlo.tech/api/v1/purchases/",{},configUser)
     .then(res=>console.log(res))
     .finally(()=>{
-      dispatch(getCartThunk())
-      dispatch(getPurchasesThunk())
+      dispatch(getCartThunk(false))
+      dispatch(getPurchasesThunk(false))
       dispatch(setLoader(false))
     })
   }
@@ -35,7 +35,7 @@ function Cart() {
     }
     axios.put(`https://e-commerce-api-v2.academlo.tech/api/v1/cart/${id}/`, body, configUser)
       .then(res => {
-        dispatch(getCartThunk())
+        dispatch(getCartThunk(false))
       })
   }
   function minusQuantity(q, id) {
@@ -45,14 +45,14 @@ function Cart() {
     if (body.quantity > 0) {
       axios.put(`https://e-commerce-api-v2.academlo.tech/api/v1/cart/${id}/`, body, configUser)
         .then(res => {
-          dispatch(getCartThunk())
+          dispatch(getCartThunk(false))
         })
     }
   }
   function DeleteProduct(id) {
     axios.delete(`https://e-commerce-api-v2.academlo.tech/api/v1/cart/${id}/`, configUser)
       .then(res => {
-        dispatch(getCartThunk())
+        dispatch(getCartThunk(false))
       })
   }
   return (
@@ -112,7 +112,7 @@ function Cart() {
                               <li key={product.id} className="flex py-6 h-40">
                                 <div className="h-24 w-24 flex-shrink-0 flex justify-center items-center overflow-hidden rounded-md border border-gray-200">
                                   <img
-                                    src={product.product.images[2].url}
+                                    src={product.product.images[0].url}
                                     alt={product.product.description}
                                     className="h-5/6 object-contain object-center"
                                   />
@@ -122,7 +122,9 @@ function Cart() {
                                   <div>
                                     <div className="flex justify-between text-base font-medium text-gray-900">
                                       <h3>
-                                        <Link to={"/product/" + product.productId}>{product.product.title}</Link>
+                                        <Link
+                                        onClick={()=>dispatch(setOpen(false))}
+                                        to={`/product/${product.productId}`}>{product.product.title}</Link>
                                       </h3>
                                       <p className="ml-4">{product.price}</p>
                                     </div>

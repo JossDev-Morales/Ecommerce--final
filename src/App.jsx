@@ -45,11 +45,7 @@ function App() {
     }
   }
   useEffect(() => {
-    dispatch(getPurchasesThunk())
-  }, [])
-  useEffect(() => {
     dispatch(getProductsThunk())
-    dispatch(getCartThunk())
   }, [dispatch])
   useEffect(() => {
     if (localStorage.getItem("token") != "") {
@@ -60,6 +56,8 @@ function App() {
           axios.get("https://api.jsonbin.io/v3/b/63db31e2ebd26539d073338b/", config)
             .then(images => {
               dispatch(setAvatarPath(images.data.record["u" + res.data.id]))
+              dispatch(getPurchasesThunk(false))
+              dispatch(getCartThunk(false))
             })
 
         })
@@ -81,7 +79,7 @@ function App() {
         <Route element={<ProtectedRoutes />}>
           <Route path="/purchases" element={<Purchases />} />
           <Route path="/user" element={<User />} />
-          <Route path='/config' element={<ConfigComponent/>}/>
+          <Route path='/settings' element={<ConfigComponent/>} />
         </Route>
 
       </Routes>
